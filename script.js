@@ -36,9 +36,11 @@
     a.addEventListener('click', closeMenu);
   });
 
-  /* Reveal on scroll */
+  /* Reveal on scroll — désactivé si GSAP est chargé (GSAP gère les animations) */
   const revealEls = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window) {
+  if (window.gsap) {
+    /* GSAP prend le relais (voir animations.js) */
+  } else if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry, i) {
         if (entry.isIntersecting) {
