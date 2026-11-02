@@ -31,7 +31,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/icon-32.png" />
   <link rel="apple-touch-icon" href="assets/brand/icon-180.png" />
   <link rel="preload" href="assets/fonts/plus-jakarta-sans.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="assets/shots/demo-immo.webp" as="image" />
+  <link rel="preload" href="assets/photos/hero.webp" as="image" fetchpriority="high" />
   <link rel="stylesheet" href="styles.css" />
 
   <!-- Données structurées : entreprise -->
@@ -183,29 +183,42 @@
               <p>Un site élégant qui présente votre activité, inspire confiance dès la première seconde et transforme les visiteurs en clients.</p>
               <ul class="tags"><li>Jusqu'à 5 pages</li><li>WhatsApp intégré</li><li>Mobile-first</li></ul>
             </div>
-            <img class="tile-img" src="assets/serv-vitrine.webp" alt="Vitrine de boutique" loading="lazy" width="841" height="1069" />
+            <div class="tile-img"><img src="assets/photos/vitrine.webp" alt="Écran affichant des maquettes de sites et d'applications" loading="lazy" width="1100" height="749" /></div>
           </article>
-          <article class="tile reveal">
-            <span class="tile-ico"><svg class="ic"><use href="#i-shopping-cart"/></svg></span>
-            <h3>Boutiques e-commerce</h3>
-            <p>Vendez en ligne 24h/24 avec un parcours d'achat simple, sécurisé et adapté au paiement mobile.</p>
+          <article class="tile tile-photo reveal">
+            <div class="tile-media"><img src="assets/photos/ecommerce.webp" alt="Cliente qui paie ses achats avec son téléphone" loading="lazy" width="1100" height="734" /></div>
+            <div class="tile-body">
+              <span class="tile-ico"><svg class="ic"><use href="#i-shopping-cart"/></svg></span>
+              <h3>Boutiques e-commerce</h3>
+              <p>Vendez en ligne 24h/24 avec un parcours d'achat simple, sécurisé et adapté au paiement mobile.</p>
+            </div>
           </article>
-          <article class="tile reveal">
-            <span class="tile-ico"><svg class="ic"><use href="#i-app-window"/></svg></span>
-            <h3>Applications web</h3>
-            <p>Réservations, espaces clients, tableaux de bord, outils métiers : des plateformes taillées pour vous.</p>
+          <article class="tile tile-photo reveal">
+            <div class="tile-media"><img src="assets/photos/appweb.webp" alt="Ordinateur portable affichant un tableau de bord" loading="lazy" width="900" height="641" /></div>
+            <div class="tile-body">
+              <span class="tile-ico"><svg class="ic"><use href="#i-app-window"/></svg></span>
+              <h3>Applications web</h3>
+              <p>Réservations, espaces clients, tableaux de bord, outils métiers : des plateformes taillées pour vous.</p>
+            </div>
           </article>
-          <article class="tile reveal">
-            <span class="tile-ico"><svg class="ic"><use href="#i-search-check"/></svg></span>
-            <h3>Référencement SEO</h3>
-            <p>Structure technique, contenus et vitesse pensés pour apparaître quand vos clients vous cherchent sur Google.</p>
+          <article class="tile tile-photo reveal">
+            <div class="tile-media"><img src="assets/photos/seo.webp" alt="Navigation sur un site depuis un ordinateur et un téléphone" loading="lazy" width="900" height="600" /></div>
+            <div class="tile-body">
+              <span class="tile-ico"><svg class="ic"><use href="#i-search-check"/></svg></span>
+              <h3>Référencement SEO</h3>
+              <p>Structure technique, contenus et vitesse pensés pour apparaître quand vos clients vous cherchent sur Google.</p>
+            </div>
           </article>
-          <article class="tile reveal">
-            <span class="tile-ico"><svg class="ic"><use href="#i-palette"/></svg></span>
-            <h3>Identité de marque</h3>
-            <p>Logo, couleurs, typographies : une image cohérente et mémorable sur tous vos supports.</p>
+          <article class="tile tile-photo reveal">
+            <div class="tile-media"><img src="assets/photos/identite.webp" alt="Nuanciers de couleurs pour une identité visuelle" loading="lazy" width="900" height="1125" /></div>
+            <div class="tile-body">
+              <span class="tile-ico"><svg class="ic"><use href="#i-palette"/></svg></span>
+              <h3>Identité de marque</h3>
+              <p>Logo, couleurs, typographies : une image cohérente et mémorable sur tous vos supports.</p>
+            </div>
           </article>
           <article class="tile tile-band reveal">
+            <img class="tile-band-bg" src="assets/photos/maintenance.webp" alt="" loading="lazy" width="1400" height="935" />
             <span class="tile-ico"><svg class="ic"><use href="#i-shield-check"/></svg></span>
             <div>
               <h3>Maintenance &amp; support</h3>
@@ -218,7 +231,7 @@
     </section>
 
     <!-- ============ DÉMOS ============ -->
-    <section class="section section-tint" id="demos">
+    <section class="section section-photo section-photo-light" id="demos" style="--bg: url('assets/photos/bg-demos.webp')">
       <div class="container">
         <header class="section-head reveal">
           <span class="kicker">Démos</span>
@@ -293,7 +306,7 @@
     </section>
 
     <!-- ============ MÉTHODE ============ -->
-    <section class="section section-dark" id="methode">
+    <section class="section section-dark section-photo" id="methode" style="--bg: url('assets/photos/bg-methode.webp')">
       <div class="container">
         <header class="section-head reveal">
           <span class="kicker">Notre méthode</span>
@@ -310,7 +323,7 @@
     </section>
 
     <!-- ============ TARIFS ============ -->
-    <section class="section" id="tarifs">
+    <section class="section section-photo section-photo-light" id="tarifs" style="--bg: url('assets/photos/bg-tarifs.webp')">
       <div class="container">
         <header class="section-head reveal">
           <span class="kicker">Tarifs</span>
@@ -373,6 +386,10 @@
           <h2>Tout ce que vous voulez <em>savoir</em></h2>
           <p>Une autre question en tête&nbsp;? Écrivez-nous, on répond vite.</p>
           <a class="btn btn-wa" href="https://wa.me/237655282559?text=Bonjour%20SIPA%2C%20j'ai%20une%20question." target="_blank" rel="noopener"><svg class="ic"><use href="#i-message-circle"/></svg> Poser ma question</a>
+          <figure class="faq-photo">
+            <img src="assets/photos/faq.webp" alt="Conseillère souriante, prête à répondre à vos questions" loading="lazy" width="900" height="600" />
+            <figcaption><svg class="ic"><use href="#i-clock"/></svg> Réponse rapide, du lundi au samedi</figcaption>
+          </figure>
         </header>
         <div class="faq reveal">
           <details>
@@ -410,7 +427,7 @@
     <!-- ============ CONTACT ============ -->
     <section class="section" id="contact">
       <div class="container">
-        <div class="contact-card">
+        <div class="contact-card" style="--bg: url('assets/photos/bg-contact.webp')">
           <div class="contact-copy reveal">
             <span class="kicker kicker-light">Devis gratuit</span>
             <h2>Parlons de votre <em>projet</em></h2>
