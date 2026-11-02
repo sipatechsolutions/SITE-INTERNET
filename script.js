@@ -1,188 +1,151 @@
 /* ======================================================================
-   SIPA Tech Solutions — interactions
+   SIPA Tech Solutions — interactions (refonte v2)
    =================================================================== */
 (function () {
   'use strict';
 
-  const header = document.getElementById('header');
-  const menuToggle = document.getElementById('menuToggle');
-  const nav = document.getElementById('nav');
-  const progress = document.getElementById('scrollProgress');
-  const waFloat = document.querySelector('.wa-float');
+  document.documentElement.classList.add('js');
 
-  /* Header state + scroll progress + bouton WhatsApp flottant (discret) */
+  var WA_NUMBER = '237655282559';
+  var header = document.getElementById('header');
+  var menuToggle = document.getElementById('menuToggle');
+  var nav = document.getElementById('nav');
+  var progress = document.getElementById('scrollProgress');
+  var waFloat = document.querySelector('.wa-float');
+
+  /* En-tête, barre de progression, bouton WhatsApp flottant */
   function onScroll() {
-    const y = window.scrollY;
-    header.classList.toggle('scrolled', y > 30);
-    const h = document.documentElement.scrollHeight - window.innerHeight;
+    var y = window.scrollY;
+    header.classList.toggle('scrolled', y > 10);
+    var h = document.documentElement.scrollHeight - window.innerHeight;
     progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
-    if (waFloat) waFloat.classList.toggle('show', y > window.innerHeight * 0.75);
+    if (waFloat) waFloat.classList.toggle('show', y > window.innerHeight * 0.6);
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  /* Mobile menu */
-  function closeMenu() {
-    nav.classList.remove('open');
-    menuToggle.classList.remove('open');
-    menuToggle.setAttribute('aria-expanded', 'false');
-  }
-  menuToggle.addEventListener('click', function () {
-    const open = nav.classList.toggle('open');
+  /* Menu mobile */
+  function setMenu(open) {
+    nav.classList.toggle('open', open);
     menuToggle.classList.toggle('open', open);
     menuToggle.setAttribute('aria-expanded', String(open));
-  });
-  nav.querySelectorAll('a').forEach(function (a) {
-    a.addEventListener('click', closeMenu);
-  });
+    menuToggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+  }
+  menuToggle.addEventListener('click', function () { setMenu(!nav.classList.contains('open')); });
+  nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
 
-  /* Reveal on scroll — désactivé si GSAP est chargé (GSAP gère les animations) */
-  const revealEls = document.querySelectorAll('.reveal');
-  if (window.gsap) {
-    /* GSAP prend le relais (voir animations.js) */
-  } else if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry, i) {
-        if (entry.isIntersecting) {
-          const el = entry.target;
-          const group = el.parentElement ? Array.from(el.parentElement.children).indexOf(el) : 0;
-          el.style.transitionDelay = Math.min(group * 80, 400) + 'ms';
-          el.classList.add('in');
-          io.unobserve(el);
-        }
+  /* Lien actif dans la navigation selon la section visible */
+  var links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]:not(.btn)'));
+  if ('IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        links.forEach(function (l) { l.classList.toggle('active', l.getAttribute('href') === '#' + entry.target.id); });
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-    revealEls.forEach(function (el) { io.observe(el); });
-  } else {
-    revealEls.forEach(function (el) { el.classList.add('in'); });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    links.forEach(function (l) {
+      var s = document.querySelector(l.getAttribute('href'));
+      if (s) spy.observe(s);
+    });
   }
 
-  /* Animated counters */
-  const counters = document.querySelectorAll('.stat-num');
-  const countObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const target = parseInt(el.dataset.count, 10) || 0;
-      const suffix = el.dataset.suffix || '';
-      const dur = 1400;
-      const start = performance.now();
-      function tick(now) {
-        const p = Math.min((now - start) / dur, 1);
-        const eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = Math.round(target * eased) + suffix;
-        if (p < 1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-      countObserver.unobserve(el);
-    });
-  }, { threshold: 0.5 });
-  counters.forEach(function (c) { countObserver.observe(c); });
+  /* Apparition au défilement — GSAP prend le relais s'il est chargé (animations.js) */
+  var revealEls = document.querySelectorAll('.reveal');
+  if (!window.gsap) {
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+      revealEls.forEach(function (el) { io.observe(el); });
+    } else {
+      revealEls.forEach(function (el) { el.classList.add('in'); });
+    }
+  }
 
-  /* Card spotlight following cursor */
-  document.querySelectorAll('.card').forEach(function (card) {
-    card.addEventListener('mousemove', function (e) {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  /* Compteurs animés */
+  var counters = document.querySelectorAll('[data-count]');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && 'IntersectionObserver' in window) {
+    var countObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        var target = parseInt(el.dataset.count, 10) || 0;
+        var start = performance.now();
+        (function tick(now) {
+          var p = Math.min((now - start) / 1200, 1);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+          if (p < 1) requestAnimationFrame(tick);
+        })(start);
+        countObserver.unobserve(el);
+      });
+    }, { threshold: 0.6 });
+    counters.forEach(function (c) { countObserver.observe(c); });
+  }
+
+  /* Boutons des formules : pré-remplissent le formulaire */
+  document.querySelectorAll('[data-plan]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var msg = document.getElementById('message');
+      if (msg && !msg.value) msg.value = 'Je suis intéressé(e) par la formule ' + btn.dataset.plan + '. ';
     });
   });
 
-  /* Contact form -> mailto */
-  const form = document.getElementById('contactForm');
+  /* FAQ : une seule réponse ouverte à la fois */
+  var faqItems = document.querySelectorAll('.faq details');
+  faqItems.forEach(function (d) {
+    d.addEventListener('toggle', function () {
+      if (!d.open) return;
+      faqItems.forEach(function (o) { if (o !== d) o.open = false; });
+    });
+  });
+
+  /* Formulaire de devis -> message WhatsApp pré-rempli */
+  var form = document.getElementById('contactForm');
   if (form) {
-    const success = document.getElementById('formSuccess');
-    const fsName = document.getElementById('fsName');
+    var success = document.getElementById('formSuccess');
+    var fsName = document.getElementById('fsName');
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      const name = form.name.value.trim();
-      const phone = form.phone ? form.phone.value.trim() : '';
-      const email = form.email.value.trim();
-      const type = form.type.value;
-      const message = form.message.value.trim();
-      const lines = [
+      var firstInvalid = null;
+      form.querySelectorAll('[required]').forEach(function (f) {
+        var ok = f.value.trim() !== '';
+        f.closest('.field').classList.toggle('invalid', !ok);
+        if (!ok && !firstInvalid) firstInvalid = f;
+      });
+      if (firstInvalid) { firstInvalid.focus(); return; }
+
+      var name = form.name.value.trim();
+      var email = form.email.value.trim();
+      var lines = [
         'Bonjour SIPA Tech Solutions, je souhaite un devis :',
         'Nom : ' + name,
-        'WhatsApp / Tél : ' + phone,
-        (email ? 'Email : ' + email : ''),
-        'Type de projet : ' + type,
-        'Projet : ' + message
+        'WhatsApp / Tél : ' + form.phone.value.trim(),
+        email ? 'Email : ' + email : '',
+        'Type de projet : ' + form.type.value,
+        'Projet : ' + form.message.value.trim()
       ].filter(Boolean);
-      const wa = 'https://wa.me/237655282559?text=' + encodeURIComponent(lines.join('\n'));
-      window.open(wa, '_blank');
-      if (fsName) fsName.textContent = name ? name.split(' ')[0] : '';
-      if (success) {
-        success.hidden = false;
-        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+      window.open('https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(lines.join('\n')), '_blank', 'noopener');
+      fsName.textContent = name.split(' ')[0];
+      success.hidden = false;
       form.reset();
     });
-    const again = form.querySelector('.fs-again');
-    if (again && success) {
-      again.addEventListener('click', function () {
-        success.hidden = true;
-        const first = form.querySelector('#name');
-        if (first) first.focus();
-      });
-    }
-  }
-
-  /* Modales "études de cas" */
-  let lastFocused = null;
-  function openModal(id) {
-    const m = document.getElementById(id);
-    if (!m) return;
-    lastFocused = document.activeElement;
-    m.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    const closeBtn = m.querySelector('.modal-close');
-    if (closeBtn) closeBtn.focus();
-  }
-  function closeModal(m) {
-    m.classList.remove('open');
-    document.body.style.overflow = '';
-    const sc = m.querySelector('.modal-scroll');
-    if (sc) sc.scrollTop = 0;
-    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
-  }
-  document.querySelectorAll('[data-modal]').forEach(function (trigger) {
-    trigger.addEventListener('click', function () { openModal(trigger.dataset.modal); });
-    trigger.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(trigger.dataset.modal); }
+    form.addEventListener('input', function (e) {
+      var field = e.target.closest('.field');
+      if (field) field.classList.remove('invalid');
     });
-  });
-  document.querySelectorAll('.modal-overlay').forEach(function (m) {
-    m.addEventListener('click', function (e) { if (e.target === m) closeModal(m); });
-    const c = m.querySelector('.modal-close');
-    if (c) c.addEventListener('click', function () { closeModal(m); });
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-      const open = document.querySelector('.modal-overlay.open');
-      if (open) closeModal(open);
-    }
-  });
-
-  /* FAQ accordéon */
-  const faqBtns = document.querySelectorAll('.faq-q');
-  faqBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      const item = btn.closest('.faq-item');
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(function (it) {
-        it.classList.remove('open');
-        const b = it.querySelector('.faq-q');
-        if (b) b.setAttribute('aria-expanded', 'false');
-      });
-      if (!isOpen) {
-        item.classList.add('open');
-        btn.setAttribute('aria-expanded', 'true');
-      }
+    form.querySelector('.fs-again').addEventListener('click', function () {
+      success.hidden = true;
+      form.querySelector('#name').focus();
     });
-  });
+  }
 
-  /* Year */
-  const yearEl = document.getElementById('year');
+  /* Année */
+  var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
-
 })();
