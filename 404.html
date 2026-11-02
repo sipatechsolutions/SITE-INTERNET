@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Page introuvable — SIPA Tech Solutions</title>
   <meta name="robots" content="noindex" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/SITE-INTERNET/assets/brand/icon-32.png" />
+  <!-- Racine du site : /SITE-INTERNET/ sur GitHub Pages, / ailleurs (Netlify…) -->
+  <script>document.write('<base href="' + (location.hostname.slice(-10) === '.github.io' ? '/SITE-INTERNET/' : '/') + '">');</script>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/icon-32.png" />
   <style>
     @font-face { font-family: 'Plus Jakarta Sans'; font-weight: 200 800; font-display: swap;
-      src: url('/SITE-INTERNET/assets/fonts/plus-jakarta-sans.woff2') format('woff2'); }
+      src: url('assets/fonts/plus-jakarta-sans.woff2') format('woff2'); }
     body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; text-align: center;
       font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #0b1630;
       background: radial-gradient(700px 420px at 80% 10%, rgba(58,160,230,.18), transparent 70%), linear-gradient(180deg, #f6f9fd, #fff); }
@@ -24,11 +26,11 @@
 </head>
 <body>
   <div class="box">
-    <img src="/SITE-INTERNET/assets/brand/logo-icon.png" alt="SIPA Tech Solutions" />
+    <img src="assets/brand/logo-icon.png" alt="SIPA Tech Solutions" />
     <h1>404</h1>
     <h2>Page introuvable</h2>
     <p>La page que vous cherchez n'existe pas ou a été déplacée.</p>
-    <a href="/SITE-INTERNET/">Retour à l'accueil</a>
+    <a href="./">Retour à l'accueil</a>
   </div>
 </body>
 </html>

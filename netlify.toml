@@ -1,0 +1,16 @@
+# Configuration Netlify — site statique, aucune étape de build
+[build]
+  publish = "."
+
+# Images et polices : mise en cache 7 jours (les noms de fichiers ne sont pas versionnés)
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Sécurité de base
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
