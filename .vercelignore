@@ -1,4 +1,6 @@
 # Fichiers non publiés sur Vercel
 .netlify
+.vercel
+.env*
 netlify.toml
 README.md
