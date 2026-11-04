@@ -1,0 +1,4 @@
+# Fichiers non publiés sur Vercel
+.netlify
+netlify.toml
+README.md
