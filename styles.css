@@ -422,6 +422,21 @@ strong { font-weight: 700; }
   background: linear-gradient(180deg, transparent, rgba(124,196,245,.07), transparent); animation: scan 7s linear infinite; }
 @keyframes scan { to { transform: translateY(1100px); } }
 
+/* Barre d'en-tête : fond clair « tech » (un fond sombre rendrait le logo illisible :
+   contraste mesuré 1,8 contre 10,9 sur fond clair) */
+.site-header { background: linear-gradient(100deg, rgba(255,255,255,.94) 0%, rgba(240,247,254,.92) 55%, rgba(232,243,253,.92) 100%); }
+.site-header::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(240px 90px at 90px 50%, rgba(58,160,230,.18), transparent 70%),
+    linear-gradient(rgba(11,92,173,.07) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, rgba(11,92,173,.07) 1px, transparent 1px) 0 0 / 24px 24px;
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,.35) 45%, #000 100%); mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,.35) 45%, #000 100%); }
+.site-header::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; pointer-events: none;
+  background: linear-gradient(90deg, transparent 0%, #1478c8 20%, #7cc4f5 45%, #34d27b 70%, transparent 100%);
+  background-size: 200% 100%; animation: header-line 8s linear infinite; opacity: .85; }
+@keyframes header-line { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+.site-header.scrolled { border-color: transparent; }
+
 /* Mot clé du titre en dégradé lumineux */
 .hero-title em { background: var(--glow); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .06em; }
 .pill { font-family: var(--mono); font-size: .8rem; letter-spacing: .02em; }
@@ -538,6 +553,6 @@ strong { font-weight: 700; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .marquee-track { animation: none; }
-  .fx-grid, .fx-orb, .fx-scan, .plan-featured::before { animation: none; }
+  .fx-grid, .fx-orb, .fx-scan, .plan-featured::before, .site-header::after { animation: none; }
   .hero-visual { transform: none; }
 }
