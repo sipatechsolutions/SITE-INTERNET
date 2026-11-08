@@ -122,7 +122,7 @@ strong { font-weight: 700; }
   background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); font-size: .87rem; font-weight: 600; color: #fff;
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 .pill-dot { width: 8px; height: 8px; border-radius: 50%; background: #34d27b; box-shadow: 0 0 0 4px rgba(52,210,123,.25); }
-.hero-title { font-size: clamp(2.5rem, 5.4vw, 4.3rem); margin: 22px 0 20px; color: #fff; }
+.hero-title { font-size: clamp(2.3rem, 4.6vw, 3.6rem); margin: 22px 0 20px; color: #fff; }
 .hero-title em { font-size: 1.08em; color: #7cc4f5; }
 .hero-lead { font-size: 1.15rem; color: #c9d6ea; max-width: 34em; }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin: 32px 0 26px; }
@@ -213,6 +213,15 @@ strong { font-weight: 700; }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
 .tags li { font-size: .82rem; font-weight: 650; color: var(--navy); background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
 
+/* ---------- Pour qui ---------- */
+.segments { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.segment { display: flex; gap: 16px; align-items: flex-start; padding: 24px; border-radius: var(--radius-sm); background: #fff; border: 1px solid var(--line);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+.segment:hover { transform: translateY(-3px); box-shadow: var(--shadow-sm); }
+.segment .tile-ico { margin: 0; flex: none; width: 46px; height: 46px; }
+.segment h3 { font-size: 1.08rem; color: var(--navy); margin-bottom: 6px; }
+.segment p { color: var(--muted); font-size: .95rem; }
+
 /* ---------- Démos ---------- */
 .demos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
 .demo { display: flex; flex-direction: column; border-radius: var(--radius); background: #fff; border: 1px solid var(--line); overflow: hidden;
@@ -276,6 +285,12 @@ strong { font-weight: 700; }
 .plan-badge { position: absolute; top: -14px; left: 32px; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px;
   background: linear-gradient(135deg, var(--sky), var(--blue)); color: #fff; font-size: .8rem; font-weight: 700; }
 .plan-badge .ic { width: .95em; height: .95em; fill: currentColor; }
+.plan-price .plan-split { display: block; margin: 8px 0 0; font-size: .8rem; font-weight: 600; color: var(--blue); letter-spacing: 0; }
+.guarantees { margin: 40px auto 0; max-width: 880px; padding: 28px 32px; border-radius: var(--radius); background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
+.guarantees h3 { font-size: 1.15rem; color: var(--navy); margin-bottom: 16px; }
+.guarantees ul { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 28px; }
+.guarantees li { display: flex; gap: 10px; align-items: flex-start; font-size: .97rem; color: var(--ink); }
+.guarantees li .ic { color: var(--wa); stroke-width: 3; margin-top: .2em; width: 1.05em; height: 1.05em; }
 .pay-note { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 44px; text-align: center; color: var(--muted); font-size: .97rem; }
 .pay-note .ic { color: var(--blue); }
 
@@ -358,6 +373,7 @@ strong { font-weight: 700; }
   .hero-grid { grid-template-columns: 1fr; gap: 56px; }
   .hero-visual { max-width: 640px; width: 100%; margin-inline: auto; }
   .bento { grid-template-columns: repeat(2, 1fr); }
+  .segments { grid-template-columns: repeat(2, 1fr); }
   .why { grid-template-columns: 1fr; gap: 48px; }
   .why-media { max-width: 520px; }
   .steps { grid-template-columns: repeat(2, 1fr); }
@@ -388,7 +404,8 @@ strong { font-weight: 700; }
   .hero-cta .btn { flex: 1 1 100%; }
   .chip-a { left: 0; } .chip-b { right: 0; }
   .float-chip { font-size: .78rem; padding: 8px 12px; }
-  .bento, .demos, .stats, .steps { grid-template-columns: 1fr; }
+  .bento, .demos, .stats, .steps, .segments, .guarantees ul { grid-template-columns: 1fr; }
+  .guarantees { padding: 22px 20px; }
   .tile-wide, .demo-lg { grid-column: auto; }
   .tile-band { flex-direction: column; align-items: flex-start; }
   .tile-band .btn { width: 100%; }

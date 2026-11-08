@@ -26,7 +26,7 @@
     scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 
   /* 3) Apparitions au défilement, en cascade par groupe */
-  var groups = ['.bento', '.demos', '.stats', '.steps', '.pricing'];
+  var groups = ['.bento', '.segments', '.demos', '.stats', '.steps', '.pricing'];
   var grouped = [];
   groups.forEach(function (sel) {
     var grid = document.querySelector(sel);
