@@ -90,6 +90,35 @@
     counters.forEach(function (c) { countObserver.observe(c); });
   }
 
+  /* Halo qui suit la souris sur les cartes */
+  var pointeurFin = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (pointeurFin){
+    document.querySelectorAll('.tile, .demo, .plan, .stat, .step').forEach(function (carte) {
+      carte.addEventListener('pointermove', function (e) {
+        var r = carte.getBoundingClientRect();
+        carte.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        carte.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+  }
+
+  /* Fenêtres de démo du hero inclinées en 3D selon la souris */
+  var hero = document.querySelector('.hero');
+  var visuel = document.querySelector('.hero-visual');
+  if (hero && visuel && pointeurFin && !reduce){
+    hero.addEventListener('pointermove', function (e) {
+      var r = hero.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      visuel.style.setProperty('--ry', (x * 10).toFixed(2) + 'deg');
+      visuel.style.setProperty('--rx', (-y * 8).toFixed(2) + 'deg');
+    });
+    hero.addEventListener('pointerleave', function () {
+      visuel.style.setProperty('--ry', '0deg');
+      visuel.style.setProperty('--rx', '0deg');
+    });
+  }
+
   /* Boutons des formules : pré-remplissent le formulaire */
   document.querySelectorAll('[data-plan]').forEach(function (btn) {
     btn.addEventListener('click', function () {

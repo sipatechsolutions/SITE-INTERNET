@@ -12,6 +12,10 @@
   font-family: 'Instrument Serif'; font-style: italic; font-weight: 400;
   font-display: swap; src: url('assets/fonts/instrument-serif-italic.woff2') format('woff2');
 }
+@font-face {
+  font-family: 'JetBrains Mono'; font-style: normal; font-weight: 100 800;
+  font-display: swap; src: url('assets/fonts/jetbrains-mono.woff2') format('woff2');
+}
 
 /* ---------- Jetons ---------- */
 :root {
@@ -39,6 +43,8 @@
   --ease:      cubic-bezier(.22,.61,.36,1);
   --font:      'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --serif:     'Instrument Serif', Georgia, serif;
+  --mono:      'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+  --glow:      linear-gradient(110deg, #7cc4f5 0%, #3aa0e6 40%, #34d27b 100%);
 }
 
 /* ---------- Base ---------- */
@@ -393,6 +399,74 @@ strong { font-weight: 700; }
 .js .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
 .js .reveal.in, .gsap-ready .reveal { opacity: 1; transform: none; transition: none; }
 
+/* ==========================================================================
+   Couche « tech » : grille animée, halos, police code, lueurs au survol
+   ======================================================================= */
+
+/* Petits titres en police code : // nos services */
+.kicker { font-family: var(--mono); font-weight: 600; letter-spacing: .06em; text-transform: lowercase; }
+.kicker::before { content: '// '; opacity: .55; }
+
+/* En-tête : grille qui défile, halos, ligne de balayage */
+.hero-fx { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.fx-grid { position: absolute; inset: -60px 0 0 0;
+  background-image: linear-gradient(rgba(124,196,245,.10) 1px, transparent 1px), linear-gradient(90deg, rgba(124,196,245,.10) 1px, transparent 1px);
+  background-size: 60px 60px; animation: grid-move 18s linear infinite;
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 30% 45%, #000 20%, transparent 75%); mask-image: radial-gradient(ellipse 75% 70% at 30% 45%, #000 20%, transparent 75%); }
+@keyframes grid-move { to { transform: translateY(60px); } }
+.fx-orb { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .55; animation: orb-float 14s ease-in-out infinite; }
+.fx-orb-a { width: 420px; height: 420px; left: -120px; top: 10%; background: #1478c8; }
+.fx-orb-b { width: 360px; height: 360px; right: 8%; bottom: -120px; background: #34d27b; opacity: .22; animation-delay: -7s; }
+@keyframes orb-float { 50% { transform: translate(40px, -30px) scale(1.08); } }
+.fx-scan { position: absolute; left: 0; right: 0; height: 120px; top: -120px;
+  background: linear-gradient(180deg, transparent, rgba(124,196,245,.07), transparent); animation: scan 7s linear infinite; }
+@keyframes scan { to { transform: translateY(1100px); } }
+
+/* Mot clé du titre en dégradé lumineux */
+.hero-title em { background: var(--glow); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .06em; }
+.pill { font-family: var(--mono); font-size: .8rem; letter-spacing: .02em; }
+
+/* Fenêtres de démo inclinées en 3D (pilotées par la souris dans script.js) */
+.hero-visual { transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .25s ease-out; transform-style: preserve-3d; }
+.browser { box-shadow: 0 2px 4px rgba(0,0,0,.1), 0 40px 80px -30px rgba(0,0,0,.6), 0 0 0 1px rgba(124,196,245,.15); }
+.float-chip { font-family: var(--mono); font-size: .8rem; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); background: rgba(255,255,255,.92); }
+
+/* Halo qui suit la souris sur les cartes */
+.tile, .demo, .plan, .stat, .step { position: relative; }
+.tile::after, .demo::after, .plan::after, .stat::after, .step::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 1; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(58,160,230,.14), transparent 45%); }
+.tile:hover::after, .demo:hover::after, .plan:hover::after, .stat:hover::after, .step:hover::after { opacity: 1; }
+.tile:hover, .demo:hover, .stat:hover { border-color: rgba(58,160,230,.45); box-shadow: 0 0 0 1px rgba(58,160,230,.25), var(--shadow); }
+.step::after { background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(124,196,245,.16), transparent 50%); }
+
+/* Chiffres en police code et en dégradé */
+.stat strong { font-family: var(--mono); font-weight: 700; letter-spacing: -.04em; background: linear-gradient(110deg, var(--blue), var(--sky)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.step-num { font-family: var(--mono); color: var(--sky); opacity: .8; }
+.plan-price { font-family: var(--font); }
+.marquee span { font-family: var(--mono); font-weight: 500; font-size: .95rem; letter-spacing: .02em; }
+
+/* Formule recommandée : bordure lumineuse qui tourne */
+@property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+/* Anneau de 2 px : le masque ne laisse voir le dégradé que sur le contour */
+.plan-featured::before { content: ''; position: absolute; inset: -1px; padding: 2px; border-radius: calc(var(--radius) + 1px); pointer-events: none;
+  background: conic-gradient(from var(--angle), #1478c8, #7cc4f5, #34d27b, #1478c8); animation: spin-border 6s linear infinite;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+@keyframes spin-border { to { --angle: 360deg; } }
+.plan-featured { box-shadow: 0 0 0 1px rgba(124,196,245,.2), 0 0 60px -12px rgba(58,160,230,.55), 0 40px 80px -40px rgba(10,31,68,.8); }
+
+/* Boutons principaux : légère lueur */
+.btn-primary { background: linear-gradient(110deg, var(--blue), var(--blue-2)); }
+.btn-primary:hover { box-shadow: 0 0 0 4px rgba(58,160,230,.18), 0 12px 28px -10px rgba(11,92,173,.8); }
+.btn-wa:hover { box-shadow: 0 0 0 4px rgba(31,174,91,.2), 0 12px 28px -10px rgba(31,174,91,.8); }
+
+/* Section sombre : grille fine */
+.section-dark::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: linear-gradient(rgba(124,196,245,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(124,196,245,.06) 1px, transparent 1px);
+  background-size: 48px 48px; -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000, transparent 80%); mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000, transparent 80%); }
+.section-dark { isolation: isolate; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1080px) {
   .hero-grid { grid-template-columns: 1fr; gap: 56px; }
@@ -464,4 +538,6 @@ strong { font-weight: 700; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .marquee-track { animation: none; }
+  .fx-grid, .fx-orb, .fx-scan, .plan-featured::before { animation: none; }
+  .hero-visual { transform: none; }
 }
