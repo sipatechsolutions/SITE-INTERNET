@@ -372,6 +372,23 @@ strong { font-weight: 700; }
 .wa-float:hover { background: var(--wa-dark); }
 .wa-float svg { width: 32px; height: 32px; }
 
+/* ---------- Pages légales ---------- */
+.legal-body .site-footer { padding-top: 0; }
+.legal-body .footer-bottom { margin-top: 0; }
+.legal { max-width: 760px; padding-top: 56px; padding-bottom: 80px; }
+.legal h1 { font-size: clamp(2rem, 4vw, 2.6rem); color: var(--navy); margin-bottom: 8px; }
+.legal h2 { font-size: 1.3rem; color: var(--navy); margin: 40px 0 12px; }
+.legal p, .legal li { color: var(--ink); margin-bottom: 12px; }
+.legal ul { list-style: disc; padding-left: 22px; }
+.legal a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+.legal-date { color: var(--muted); font-size: .92rem; }
+.legal-lead { margin-top: 24px; padding: 18px 22px; border-radius: var(--radius-sm); background: var(--sky-50); border: 1px solid var(--line); font-weight: 600; }
+
+/* ---------- Barre d'action fixe (mobile uniquement) ---------- */
+.mobile-cta { display: none; }
+.footer-legal a { text-decoration: underline; text-underline-offset: 3px; }
+.form-hint a { text-decoration: underline; text-underline-offset: 3px; }
+
 /* ---------- Apparition (repli sans GSAP) ---------- */
 .js .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
 .js .reveal.in, .gsap-ready .reveal { opacity: 1; transform: none; transition: none; }
@@ -433,6 +450,14 @@ strong { font-weight: 700; }
   .contact-form { padding: 22px; }
   .footer-grid { grid-template-columns: 1fr; }
   .brand-text { font-size: .95rem; }
+  /* Sur mobile, une barre pleine largeur remplace la bulle WhatsApp */
+  .wa-float { display: none; }
+  .mobile-cta { position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 900; display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 15px 20px; border-radius: 999px; background: var(--wa); color: #fff; font-weight: 700; font-size: 1rem;
+    box-shadow: 0 14px 30px -10px rgba(31,174,91,.8); opacity: 0; transform: translateY(24px); pointer-events: none;
+    transition: opacity .35s var(--ease), transform .35s var(--ease); }
+  .mobile-cta.show { opacity: 1; transform: none; pointer-events: auto; }
+  .site-footer { padding-bottom: 96px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

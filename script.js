@@ -12,6 +12,7 @@
   var nav = document.getElementById('nav');
   var progress = document.getElementById('scrollProgress');
   var waFloat = document.querySelector('.wa-float');
+  var mobileCta = document.querySelector('.mobile-cta');
 
   /* En-tête, barre de progression, bouton WhatsApp flottant */
   function onScroll() {
@@ -20,6 +21,7 @@
     var h = document.documentElement.scrollHeight - window.innerHeight;
     progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
     if (waFloat) waFloat.classList.toggle('show', y > window.innerHeight * 0.6);
+    if (mobileCta) mobileCta.classList.toggle('show', y > window.innerHeight * 0.6);
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
